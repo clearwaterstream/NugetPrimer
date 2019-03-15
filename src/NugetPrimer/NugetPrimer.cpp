@@ -32,7 +32,7 @@ void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring 
 
 	wchar_t pushPkgCmd[] = L"nuget.exe push *.nupkg -Source dti";
 
-	cmdResult = Util::ExeCmd(username, domain, password, currentDir, restorePkgCmd);
+	cmdResult = Util::ExeCmd(username, domain, password, currentDir, pushPkgCmd);
 
 	if (cmdResult)
 	{
