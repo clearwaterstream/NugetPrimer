@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Util.h"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 wstring Util::GetLastErrorMessage()
 {
@@ -25,6 +27,17 @@ wstring Util::GetLastErrorMessage()
 	LocalFree(lpMsgBuf);
 
 	return errorMsg;
+}
+
+wstring Util::GetCurrentDir()
+{
+	wchar_t exePathBuffer[MAX_PATH];
+	GetModuleFileName(NULL, exePathBuffer, MAX_PATH);
+
+	fs::path exePath(exePathBuffer);
+	wstring currentDir = exePath.parent_path();
+
+	return currentDir;
 }
 
 bool Util::ExeCmd(wstring const &username, wstring const &domain, wstring const &password, wstring const &currentDir, wchar_t* commandLine)

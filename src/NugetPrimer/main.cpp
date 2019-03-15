@@ -5,13 +5,12 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <filesystem>
 #include <boost/program_options.hpp>
 #include "main.h"
+#include "Util.h"
 #include "NugetPrimer.h"
 using namespace std;
 namespace po = boost::program_options;
-namespace fs = std::filesystem;
 
 int wmain(int argc, wchar_t *argv[])
 {	
@@ -41,8 +40,9 @@ int wmain(int argc, wchar_t *argv[])
 	
 	password << argMap["password"].as<string>().c_str();
 
-	fs::path exePath(argv[0]);
-	wstring currentDir = exePath.parent_path();
+	wstring currentDir = Util::GetCurrentDir();
+
+	wcout << "current directory is " << currentDir.c_str() << endl << endl;
 
 	NugetPrimer primer;
 

@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "NugetPrimer.h"
 #include "Util.h"
+#include <filesystem>
+
 using namespace std;
+namespace fs = std::filesystem;
 
 void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring const &password, wstring const &currentDir)
 {	
