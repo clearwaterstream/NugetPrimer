@@ -27,6 +27,43 @@ wstring Util::GetLastErrorMessage()
 	return errorMsg;
 }
 
+bool Util::ExeCmd(wstring const &username, wstring const &domain, wstring const &password, wstring const &currentDir, wchar_t* commandLine)
+{
+	PROCESS_INFORMATION processInfo = { 0 };
+	STARTUPINFO startupInfo = { 0 };
+
+	startupInfo.cb = sizeof(STARTUPINFO);
+	
+	BOOL result = CreateProcessWithLogonW(
+		username.c_str(),
+		domain.empty() ? NULL : domain.c_str(),
+		password.c_str(),
+		LOGON_WITH_PROFILE, // dwLogonFlags
+		NULL, // lpApplicationName
+		commandLine, // lpCommandLine,
+		CREATE_UNICODE_ENVIRONMENT, // dwCreationFlags,
+		NULL, // lpEnvironment,
+		currentDir.c_str(), // lpCurrentDirectory
+		&startupInfo,
+		&processInfo);
+
+	if (processInfo.hProcess != NULL)
+		CloseHandle(processInfo.hProcess);
+
+	if (processInfo.hThread != NULL)
+		CloseHandle(processInfo.hThread);
+
+	if (!result)
+	{
+		wstring errorMessage = Util::GetLastErrorMessage();
+
+		wcerr << errorMessage.c_str() << endl;
+
+		return false;
+	}
+
+	return true;
+}
 
 Util::Util()
 {

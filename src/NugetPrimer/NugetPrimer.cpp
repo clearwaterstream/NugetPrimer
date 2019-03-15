@@ -3,13 +3,16 @@
 #include "Util.h"
 using namespace std;
 
-void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring const &password)
+void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring const &password, wstring const &currentDir)
 {	
-	HANDLE phToken;
+	HANDLE hToken;
 	
-	int result = LogonUser(username.c_str(), domain.empty() ? NULL : domain.c_str(), password.c_str(), LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &phToken);
+	BOOL result = LogonUser(username.c_str(), domain.empty() ? NULL : domain.c_str(), password.c_str(), LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &hToken);
 
-	if (result == 0)
+	if (hToken != NULL)
+		CloseHandle(hToken);
+
+	if (!result)
 	{
 		wstring errorMessage = Util::GetLastErrorMessage();
 
@@ -18,8 +21,23 @@ void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring 
 		return;
 	}
 
+	wchar_t restorePkgCmd[] = L"nuget.exe restore -PackagesDirectory tmp";
 
+	bool cmdResult = Util::ExeCmd(username, domain, password, currentDir, restorePkgCmd);
 
+	if (cmdResult)
+	{
+		cout << "nuget packages restored" << endl << endl;
+	}
+
+	wchar_t pushPkgCmd[] = L"nuget.exe push *.nupkg -Source dti";
+
+	cmdResult = Util::ExeCmd(username, domain, password, currentDir, restorePkgCmd);
+
+	if (cmdResult)
+	{
+		cout << "dummy nuget package pushed" << endl << endl;
+	}
 }
 
 NugetPrimer::NugetPrimer()

@@ -5,13 +5,15 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <filesystem>
 #include <boost/program_options.hpp>
 #include "main.h"
 #include "NugetPrimer.h"
 using namespace std;
 namespace po = boost::program_options;
+namespace fs = std::filesystem;
 
-int main(int argc, char** argv)
+int wmain(int argc, wchar_t *argv[])
 {	
 	PrintTitle();
 
@@ -39,9 +41,12 @@ int main(int argc, char** argv)
 	
 	password << argMap["password"].as<string>().c_str();
 
+	fs::path exePath(argv[0]);
+	wstring currentDir = exePath.parent_path();
+
 	NugetPrimer primer;
 
-	primer.Prime(username.str(), domain.str(), password.str());
+	primer.Prime(username.str(), domain.str(), password.str(), currentDir);
 
 	if (!argMap.count("silent"))
 	{
@@ -65,7 +70,7 @@ void PrintTitle()
 	cout << border << endl << endl;
 }
 
-bool ParseOptions(po::variables_map& argMap, int argc, char** argv)
+bool ParseOptions(po::variables_map& argMap, int argc, wchar_t *argv[])
 {
 	po::options_description desc("Options");
 	
