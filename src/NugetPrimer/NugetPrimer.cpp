@@ -24,13 +24,15 @@ void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring 
 		return;
 	}
 
+	wcout << "user " << username.c_str() << " logged in" << endl;
+
 	wchar_t restorePkgCmd[] = L"nuget.exe restore -PackagesDirectory tmp";
 
 	bool cmdResult = Util::ExeCmd(username, domain, password, currentDir, restorePkgCmd);
 
 	if (cmdResult)
 	{
-		cout << "nuget packages restored" << endl << endl;
+		cout << "nuget packages restored" << endl;
 	}
 
 	wchar_t pushPkgCmd[] = L"nuget.exe push *.nupkg -Source dti";
@@ -39,8 +41,10 @@ void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring 
 
 	if (cmdResult)
 	{
-		cout << "dummy nuget package pushed" << endl << endl;
+		cout << "dummy nuget package pushed" << endl;
 	}
+
+	cout << endl;
 }
 
 NugetPrimer::NugetPrimer()
