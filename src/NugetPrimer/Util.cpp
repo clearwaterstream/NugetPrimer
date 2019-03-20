@@ -54,7 +54,7 @@ bool Util::ExeCmd(wstring const &username, wstring const &domain, wstring const 
 		LOGON_WITH_PROFILE, // dwLogonFlags
 		NULL, // lpApplicationName
 		commandLine, // lpCommandLine,
-		CREATE_UNICODE_ENVIRONMENT, // dwCreationFlags,
+		NULL, // dwCreationFlags,
 		NULL, // lpEnvironment,
 		currentDir.c_str(), // lpCurrentDirectory
 		&startupInfo,
