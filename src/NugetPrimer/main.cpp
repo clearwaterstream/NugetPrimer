@@ -42,7 +42,7 @@ int wmain(int argc, wchar_t *argv[])
 
 	wstring currentDir = Util::GetCurrentDir();
 
-	wcout << "current directory is " << currentDir.c_str() << endl << endl;
+	wcout << "current directory is " << currentDir.c_str() << endl;
 
 	NugetPrimer primer;
 

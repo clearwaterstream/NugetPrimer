@@ -10,6 +10,7 @@
 #define PCH_H
 
 #include "Windows.h"
+#include <Lmcons.h>
 
 // TODO: add headers that you want to pre-compile here
 

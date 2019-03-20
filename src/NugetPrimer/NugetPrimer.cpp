@@ -8,9 +8,19 @@ namespace fs = std::filesystem;
 
 void NugetPrimer::Prime(wstring const &username, wstring const &domain, wstring const &password, wstring const &currentDir)
 {	
+	DWORD usernameLength = UNLEN + 1;
+	wchar_t usernameBuff[UNLEN + 1] = { 0 };
+
+	BOOL result = GetUserName(usernameBuff, &usernameLength);
+
+	if (result)
+	{
+		wcout << L"current username is " << usernameBuff << endl;
+	}
+	
 	HANDLE hToken;
 	
-	BOOL result = LogonUser(username.c_str(), domain.empty() ? NULL : domain.c_str(), password.c_str(), LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &hToken);
+	result = LogonUser(username.c_str(), domain.empty() ? NULL : domain.c_str(), password.c_str(), LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, &hToken);
 
 	if (hToken != NULL)
 		CloseHandle(hToken);
